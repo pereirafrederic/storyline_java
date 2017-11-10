@@ -1,0 +1,13 @@
+---
+server: 
+  port: 9000
+spring: 
+  datasource: 
+    ddl-auto: create-drop
+    driver-class-name: org.postgresql.Driver
+    driverClassName: org.postgresql.Driver
+    password: sarahfred131216
+    platform: postgresql
+    url: "jdbc:postgresql://localhost:5432/"
+    username: postgres
+  profile: dev
