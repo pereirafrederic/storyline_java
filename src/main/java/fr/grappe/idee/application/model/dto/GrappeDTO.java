@@ -5,8 +5,8 @@ import java.util.List;
 
 public class GrappeDTO extends CommunDTO {
 
-	
 	private List<IdeeDTO> listeIdee =new ArrayList<>();
+	private List<BadgeDto> listeBadge =new ArrayList<>();
 
 	public List<IdeeDTO> getListeIdee() {
 		return listeIdee;
@@ -15,6 +15,15 @@ public class GrappeDTO extends CommunDTO {
 	public void setListeIdee(List<IdeeDTO> listeIdee) {
 		this.listeIdee = listeIdee;
 	}
+	
+	public List<BadgeDto> getListeBadge() {
+		return listeBadge;
+	}
+
+	public void setListeBadge(List<BadgeDto> listeBadge) {
+		this.listeBadge = listeBadge;
+	}
+	
 	
 	
 

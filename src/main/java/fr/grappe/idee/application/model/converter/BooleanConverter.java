@@ -4,21 +4,21 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter
-public class BooleanConverter implements AttributeConverter<Boolean, Integer> {
+public class BooleanConverter implements AttributeConverter<Boolean, Long> {
 
 		  @Override
-		  public Integer convertToDatabaseColumn(Boolean attribute) {
+		  public Long convertToDatabaseColumn(Boolean attribute) {
 		    if (attribute!=null && attribute) {
-		      return 1;
+		      return 1L;
 		    } else {
-		      return 0;
+		      return 0L;
 		    }
 		  }
 
 		  @Override
-		  public Boolean convertToEntityAttribute(Integer dbData) {
+		  public Boolean convertToEntityAttribute(Long dbData) {
 		    if (null != dbData) {
-		      return dbData.equals(1);
+		      return dbData.longValue() ==1L;
 		    } else {
 		      return false;
 		    }

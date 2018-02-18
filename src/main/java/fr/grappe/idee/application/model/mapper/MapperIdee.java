@@ -1,36 +1,45 @@
 package fr.grappe.idee.application.model.mapper;
 
-import java.util.ArrayList;import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.grappe.idee.application.model.dto.BadgeDto;
+import fr.grappe.idee.application.model.dto.DomaineDTO;
 import fr.grappe.idee.application.model.dto.IdeeDTO;
+import fr.grappe.idee.application.model.dto.IdeeDomaineDTO;
+import fr.grappe.idee.application.model.dto.IdeeGrappeDTO;
 import fr.grappe.idee.application.model.entity.AssociationEntity;
+import fr.grappe.idee.application.model.entity.DomaineEntity;
+import fr.grappe.idee.application.model.entity.GrappeEntity;
 import fr.grappe.idee.application.model.entity.IdeeEntity;
+import utils.comparator.ComparatorSort;
 
 @Service
 public class MapperIdee {
 
-	public IdeeDTO mapperUnitaire(final IdeeEntity idee, final int level, final int levelDemande) {
+	@Autowired
+	private MapperTag mapperTag;
 
-		int levelActuel = level+1;
-		if( levelDemande == 0)
-		{
+	public IdeeDTO mapperUnitaire(final IdeeEntity idee, final int level, final int levelDemande, List<Long> listeIdee) {
+
+		int levelActuel = level + 1;
+		if (levelDemande == 0) {
 			return null;
-		} else if (levelActuel == levelDemande || levelDemande == 1) {
+		} else if (listeIdee.contains(idee.getId()) || levelActuel == levelDemande || levelDemande == 1) {
 			return mapperBadge(idee, levelActuel);
 		} else if (levelActuel < levelDemande) {
-			return mapperUnitaireTotal(idee, levelActuel, levelDemande);
+			return mapperUnitaireTotal(idee, levelActuel, levelDemande, listeIdee);
 		} else {
 			return null;
 		}
-
 
 	}
 
@@ -41,48 +50,57 @@ public class MapperIdee {
 	 * @param idee
 	 *            entrée
 	 */
-	private IdeeDTO mapperBadge(IdeeEntity idee, int level) {
+	public IdeeDTO mapperBadge(IdeeEntity idee, int level) {
 		IdeeDTO ideeDto = new IdeeDTO();
 		mapperCommun(idee, ideeDto, level);
 
-		ideeDto.setContenu(mapperBadge(idee.getListeAssoIdee()));
+		ideeDto.setContenu(idee.getContenu());
 		ideeDto.setListeEsclave(new ArrayList<>());
+		ideeDto.setListeBadge(mapperBadge(idee.getListeAssoIdee()));
 
 		return ideeDto;
 
 	}
 
-	private String mapperBadge(List<AssociationEntity> listeIdee) {
-		StringBuilder contenu = new StringBuilder();
+	public List<BadgeDto> mapperBadge(List<AssociationEntity> listeIdee) {
 		Map<String, Integer> mapBadge = new HashMap<>();
+		if (null != listeIdee) {
+			// on mappe le nombre d'élement d'une grappe
+			for (AssociationEntity associationEntity : listeIdee) {
 
-		// on mappe le nombre d'élement d'une grappe
-		for (AssociationEntity associationEntity : listeIdee) {
+				if(null !=associationEntity.getGrappe())
+				{
+				String cle = associationEntity.getGrappe().getNom();
+				if (mapBadge.containsKey(cle)) {
+					Integer newValeur = mapBadge.get(cle);
+					newValeur += 1;
+					mapBadge.put(cle, newValeur);
 
-			String cle = associationEntity.getGrappe().getNom();
-			if (mapBadge.containsKey(cle)) {
-				Integer newValeur = mapBadge.get(cle);
-				newValeur += 1;
-				mapBadge.put(cle, newValeur);
+				} else {
+					mapBadge.put(cle, 1);
 
-			} else {
-				mapBadge.put(cle, 1);
+				}
+				}
+				else
+				{
+					mapBadge.put(associationEntity.getIdeeEsclave().getNom(), 1);
+				}
 
 			}
-
 		}
 
-		// on crée un contenu qui liste les grappes et le nombre d'élemet dans
-		// cette grappe
+		List<BadgeDto> listeBadge = new ArrayList<>();
+		Long id = 0L;
 		Set<String> listeCle = mapBadge.keySet();
 		for (String cle : listeCle) {
-			contenu.append(cle);
-			contenu.append(" : ");
-			contenu.append(String.valueOf(mapBadge.get(cle)));
-			contenu.append("  ");
-
+			id++;
+			BadgeDto badge = new BadgeDto();
+			badge.setId(id);
+			badge.setNom(cle);
+			badge.setNombre(mapBadge.get(cle));
+			listeBadge.add(badge);
 		}
-		return contenu.toString();
+		return listeBadge;
 	}
 
 	/***
@@ -107,25 +125,145 @@ public class MapperIdee {
 	 *            le niveau de représentation actuel
 	 * @param levelDemande
 	 *            le niveau de representation demande
+	 * @param listeIdee 
 	 * @return
 	 */
-	private IdeeDTO mapperUnitaireTotal(IdeeEntity idee, int level, int levelDemande) {
+	private IdeeDTO mapperUnitaireTotal(IdeeEntity idee, int level, int levelDemande, List<Long> listeIdee) {
 		IdeeDTO ideeDto = new IdeeDTO();
 		mapperCommun(idee, ideeDto, level);
 		ideeDto.setProjet(idee.getProjet());
 		ideeDto.setContenu(idee.getContenu());
-		ideeDto.setListeEsclave(mapperEsclave(idee, level, levelDemande));
+		if (null != idee.getTag()) {
+			ideeDto.setTag(mapperTag.mapperUnitaire(idee.getTag(), 0, 2, false, listeIdee));
+		}
+		mapperIdeeEsclaveParRegroupement(ideeDto, idee, level, levelDemande, listeIdee);
+
+		listeIdee.add(idee.getId());
 		return ideeDto;
 	}
 
-	private List<IdeeDTO> mapperEsclave(IdeeEntity idee, int level, int levelDemande) {
-		List<IdeeDTO> listeRetour = new ArrayList<>();
+	private void mapperIdeeEsclaveParRegroupement(IdeeDTO ideeDto, IdeeEntity idee, int level, int levelDemande, List<Long> listeIdee) {
+
+
+		ideeDto.setListeDomaine(new ArrayList<>());
+		ideeDto.setListeGrappe(new ArrayList<>());
+		ideeDto.setListeEsclave(new ArrayList<>());
+		
+		Map<String, IdeeDomaineDTO> mapDomaine = new HashMap<>();
+		Map<String, IdeeGrappeDTO> mapGrappe = new HashMap<>();
+		List<IdeeDTO> listeEsclave = new ArrayList<>();
 		if (null != idee.getListeAssoIdee()) {
-			for (AssociationEntity ideeEsclave : idee.getListeAssoIdee()) {
-				listeRetour.add(mapperUnitaire(ideeEsclave.getIdeeEsclave(), level, levelDemande));
+
+			for (AssociationEntity assoIdeeEsclave : idee.getListeAssoIdee()) {
+
+				if (null != assoIdeeEsclave.getGrappe() && null != assoIdeeEsclave.getGrappe().getDomaine()) {
+
+					String key = assoIdeeEsclave.getGrappe().getDomaine().getNom();
+					if (mapDomaine.containsKey(key)) {
+
+						// maj de la liste des idées liées au domaine
+						IdeeDomaineDTO ideeDomaine = mapDomaine.get(key);
+						ideeDomaine.setListeIdee(mapperIdeeEsclaveParRegroupementGrappe(ideeDomaine, assoIdeeEsclave,
+								level, levelDemande, listeIdee));
+						mapDomaine.remove(key);
+						mapDomaine.put(key, ideeDomaine);
+					} else {
+						// création d'un domaine et de sa première idée
+						IdeeDomaineDTO ideeDomaine = new IdeeDomaineDTO();
+						DomaineEntity dom = assoIdeeEsclave.getGrappe().getDomaine();
+						ideeDomaine.setId(dom.getId());
+						ideeDomaine.setNom(dom.getNom());
+						ideeDomaine.setListeIdee(mapperIdeeEsclaveParRegroupementGrappe(ideeDomaine, assoIdeeEsclave,
+								level, levelDemande, listeIdee));
+						mapDomaine.put(key, ideeDomaine);
+					}
+
+				} else if (null != assoIdeeEsclave.getGrappe()) {
+					String key = assoIdeeEsclave.getGrappe().getNom();
+					if (mapGrappe.containsKey(key)) {
+						IdeeGrappeDTO ideeGrappe = mapGrappe.get(key);
+						ideeGrappe.getListeIdee()
+								.add(mapperUnitaire(assoIdeeEsclave.getIdeeEsclave(), level, levelDemande, listeIdee));
+						mapGrappe.remove(key);
+						mapGrappe.put(key, ideeGrappe);
+					} else {
+						IdeeGrappeDTO ideeGrappe = new IdeeGrappeDTO();
+						GrappeEntity grap = assoIdeeEsclave.getGrappe();
+						ideeGrappe.setId(grap.getId());
+						ideeGrappe.setNom(grap.getNom());
+						ideeGrappe.setListeIdee(new ArrayList<>());
+						ideeGrappe.getListeIdee()
+								.add(mapperUnitaire(assoIdeeEsclave.getIdeeEsclave(), level, levelDemande, listeIdee));
+						mapGrappe.put(key, ideeGrappe);
+					}
+
+				} else {
+					listeEsclave.add(mapperUnitaire(assoIdeeEsclave.getIdeeEsclave(), level, levelDemande, listeIdee));
+				}
 
 			}
+			if (!mapDomaine.isEmpty()) {
+				for (IdeeDomaineDTO domaineElement : mapDomaine.values()) {
+					if (domaineElement.getListeIdee().size() == 1) {
+						IdeeGrappeDTO grappe = domaineElement.getListeIdee().get(0);
+						grappe.setNom(domaineElement.getNom() + " - " + grappe.getNom());
+						mapGrappe.put(grappe.getNom(), grappe);
+					} else {
+						ideeDto.getListeDomaine().add(domaineElement);
+					}
+				}
+			}
+			if (!mapGrappe.isEmpty()) {
+				for (IdeeGrappeDTO grappeElement : mapGrappe.values()) {
+					if (grappeElement.getListeIdee().size() == 1) {
+						IdeeDTO ideeElement = grappeElement.getListeIdee().get(0);
+						ideeElement.setNom(grappeElement.getNom() + " - " + ideeElement.getNom());
+						listeEsclave.add(ideeElement);
+					} else {
+						ideeDto.getListeGrappe().add(grappeElement);
+					}
+
+				}
+			}
+			ideeDto.setListeEsclave(listeEsclave);
+
 		}
+
+	}
+
+	private List<IdeeGrappeDTO> mapperIdeeEsclaveParRegroupementGrappe(IdeeDomaineDTO ideeDomaine,
+			AssociationEntity ideeEsclaveCourante, int level, int levelDemande, List<Long> listeIdee) {
+		List<IdeeGrappeDTO> listeRetour = new ArrayList<>();
+		List<IdeeGrappeDTO> listeEntree = ideeDomaine.getListeIdee();
+		Map<String, IdeeGrappeDTO> listeGrappe = new HashMap<>();
+		if (null != listeEntree) {
+			for (IdeeGrappeDTO ideeGrappeDTO : listeEntree) {
+				listeGrappe.put(ideeGrappeDTO.getNom(), ideeGrappeDTO);
+			}
+		}
+		String key = ideeEsclaveCourante.getGrappe().getNom();
+		if (listeGrappe.containsKey(key)) {
+			IdeeGrappeDTO ideeGrappe = listeGrappe.get(key);
+			ideeGrappe.getListeIdee().add(mapperUnitaire(ideeEsclaveCourante.getIdeeEsclave(), level, levelDemande, listeIdee));
+			listeGrappe.remove(key);
+			listeGrappe.put(key, ideeGrappe);
+
+		} else {
+			IdeeGrappeDTO ideeGrappe = new IdeeGrappeDTO();
+			GrappeEntity grap = ideeEsclaveCourante.getGrappe();
+			ideeGrappe.setId(grap.getId());
+			ideeGrappe.setNom(grap.getNom());
+			ideeGrappe.setListeIdee(new ArrayList<>());
+			ideeGrappe.getListeIdee().add(mapperUnitaire(ideeEsclaveCourante.getIdeeEsclave(), level, levelDemande, listeIdee));
+			listeGrappe.put(key, ideeGrappe);
+
+		}
+
+		for (IdeeGrappeDTO ideeGrappeDTO : listeGrappe.values()) {
+			listeRetour.add(ideeGrappeDTO);
+
+		}
+
 		return listeRetour;
 	}
 }

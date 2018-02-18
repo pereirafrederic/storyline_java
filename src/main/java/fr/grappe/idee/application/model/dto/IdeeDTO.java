@@ -1,5 +1,6 @@
 package fr.grappe.idee.application.model.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IdeeDTO extends CommunDTO {
@@ -8,7 +9,12 @@ public class IdeeDTO extends CommunDTO {
 	private Boolean projet;
 	private String contenu;
 
+	private TagDTO tag;
+	
+	private List<IdeeDomaineDTO> listeDomaine;
+	private List<IdeeGrappeDTO> listeGrappe;
 	private List<IdeeDTO> listeEsclave;
+	private List<BadgeDto> listeBadge =new ArrayList<>();
 	
 	
 	public int getLevel() {
@@ -34,6 +40,30 @@ public class IdeeDTO extends CommunDTO {
 	}
 	public void setContenu(String contenu) {
 		this.contenu = contenu;
+	}
+	public List<BadgeDto> getListeBadge() {
+		return listeBadge;
+	}
+	public void setListeBadge(List<BadgeDto> listeBadge) {
+		this.listeBadge = listeBadge;
+	}
+	public TagDTO getTag() {
+		return tag;
+	}
+	public void setTag(TagDTO tag) {
+		this.tag = tag;
+	}
+	public List<IdeeDomaineDTO> getListeDomaine() {
+		return listeDomaine;
+	}
+	public void setListeDomaine(List<IdeeDomaineDTO> listeDomaine) {
+		this.listeDomaine = listeDomaine;
+	}
+	public List<IdeeGrappeDTO> getListeGrappe() {
+		return listeGrappe;
+	}
+	public void setListeGrappe(List<IdeeGrappeDTO> listeGrappe) {
+		this.listeGrappe = listeGrappe;
 	}
 
 }

@@ -4,15 +4,20 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import fr.grappe.idee.application.model.dto.IdeeDTO;
-
-@Entity
+@Entity(name="domaine")
 @Table(name = "domaine", schema = "grapidee")
 public class DomaineEntity extends CommunEntity {
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "domaine", targetEntity = GrappeEntity.class)
 	private List<GrappeEntity> listeGrappe;
@@ -25,7 +30,13 @@ public class DomaineEntity extends CommunEntity {
 		this.listeGrappe = listeGrappe;
 	}
 
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
 
 }
