@@ -30,6 +30,12 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901.jdbc4</version>
 		</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.13</version>
+</dependency>
+		
 
 		<!-- anomalie Caused by: java.lang.NoClassDefFoundError: org/jboss/jandex/IndexView -->
 		<!-- https://mvnrepository.com/artifact/org.jboss/jandex -->
