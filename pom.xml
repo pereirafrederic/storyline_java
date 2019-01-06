@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.pereira.developeur</groupId>
 	<artifactId>grappe_idee</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>grappe d'idée</name>
 	<description>projet de grappe d'idée</description>
 
@@ -30,12 +30,11 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901.jdbc4</version>
 		</dependency>
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.13</version>
-</dependency>
-		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
 
 		<!-- anomalie Caused by: java.lang.NoClassDefFoundError: org/jboss/jandex/IndexView -->
 		<!-- https://mvnrepository.com/artifact/org.jboss/jandex -->
@@ -54,11 +53,6 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.16.18</version>
-		</dependency>
 	</dependencies>
 
 	<build>

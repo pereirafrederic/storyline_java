@@ -18,7 +18,7 @@ spring:
             ddl-auto: validate
 
     datasource:
-        url: jdbc:mysql://192.168.0.18:3306/grapidee
+        url: jdbc:mysql://192.168.0.18:3306/grapidee_v2
         username: app 
         password: sarahfred
         driver-class-name: com.mysql.jdbc.Driver  

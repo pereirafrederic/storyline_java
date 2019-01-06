@@ -3,9 +3,8 @@ package fr.grapidee.application.utilitaire.comparator;
 import java.util.Comparator;
 import java.util.List;
 
-import fr.grapidee.application.services.associationIdee.AssociationEntity;
-import fr.grapidee.application.services.grappe.GrappeEntity;
-import fr.grapidee.application.services.idee.IdeeEntity;
+import fr.grapidee.application.services.association.idee.AssociationIdeeEntity;
+import fr.grapidee.application.services.entite.grappe.GrappeEntity;
 
 public abstract class ComparatorSort {
 
@@ -23,11 +22,11 @@ public abstract class ComparatorSort {
 	}
 	
 	
-	public static List<AssociationEntity> getIdeeSortByGrappe(List<AssociationEntity> liste) {
+	public static List<AssociationIdeeEntity> getIdeeSortByGrappe(List<AssociationIdeeEntity> liste) {
 
-		Comparator<AssociationEntity> byName = new Comparator<AssociationEntity>() {
+		Comparator<AssociationIdeeEntity> byName = new Comparator<AssociationIdeeEntity>() {
 			@Override
-			public int compare(AssociationEntity o1, AssociationEntity o2) {
+			public int compare(AssociationIdeeEntity o1, AssociationIdeeEntity o2) {
 				return o1.getGrappe().getNom().compareTo(o2.getGrappe().getNom());
 			}
 		};

@@ -1,49 +1,44 @@
-package fr.grapidee.application.services.associationIdee;
+package fr.grapidee.application.services.association.idee;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import fr.grapidee.application.services.grappe.GrappeEntity;
-import fr.grapidee.application.services.idee.IdeeEntity;
-import fr.grapidee.application.services.projet.ProjetEntity;
+import fr.grapidee.application.services.commun.AbstractId;
+import fr.grapidee.application.services.entite.grappe.GrappeEntity;
+import fr.grapidee.application.services.entite.idee.IdeeEntity;
 
-@Entity(name="asso")
-@Table(name = "asso_idee", schema = "grapidee")
-public class AssociationEntity {
+@Entity(name="assoidee")
+@Table(name = "asso_idee", schema = "grapidee_v2")
+public class AssociationIdeeEntity extends AbstractId{
+	
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	
+	@Column(unique = true, nullable = false, length = 100)
+	private String liaison;
+	
+	
 	
 	@ManyToOne 
-	@JoinColumn(name = "idee_maitre_id")
+	@JoinColumn(name = "maitre_id")
 	private IdeeEntity ideeMaitre;
 	
 	@ManyToOne
-	@JoinColumn(name = "idee_esclave_id")
+	@JoinColumn(name = "esclave_id")
 	private IdeeEntity ideeEsclave;
 	
 	@ManyToOne
 	@JoinColumn(name="grappe_id")
 	private GrappeEntity grappe;
-	
-	
-	@ManyToOne
-	@JoinColumn(name="projet_id")
-	private ProjetEntity projet;
 
-	public Long getId() {
-		return id;
+	public String getLiaison() {
+		return liaison;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setLiaison(String liaison) {
+		this.liaison = liaison;
 	}
 
 	public IdeeEntity getIdeeMaitre() {
@@ -71,4 +66,4 @@ public class AssociationEntity {
 	}
 	
 	
-}
+	}
