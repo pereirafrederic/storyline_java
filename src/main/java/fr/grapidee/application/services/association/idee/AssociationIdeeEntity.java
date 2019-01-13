@@ -63,7 +63,6 @@ public class AssociationIdeeEntity extends AbstractId{
 
 	public void setGrappe(GrappeEntity grappe) {
 		this.grappe = grappe;
-	}
-	
+	}	
 	
 	}

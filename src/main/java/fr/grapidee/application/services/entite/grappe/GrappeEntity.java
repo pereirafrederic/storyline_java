@@ -18,6 +18,9 @@ public class GrappeEntity extends CommunEntity {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "grappe", targetEntity = AssociationGrappeEntity.class)
 	private List<AssociationGrappeEntity> listeAssoIdee;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "grappeParent", targetEntity = GrappeEntity.class)
+	private List<GrappeEntity> listeEnfants;
 	
 	@ManyToOne
 	@JoinColumn(name="grappe_id")
@@ -56,6 +59,16 @@ public class GrappeEntity extends CommunEntity {
 
 	public void setType(TypeGrappeEntity type) {
 		this.type = type;
+	}
+
+
+	public List<GrappeEntity> getListeEnfants() {
+		return listeEnfants;
+	}
+
+
+	public void setListeEnfants(List<GrappeEntity> listeEnfants) {
+		this.listeEnfants = listeEnfants;
 	}
 	
 	

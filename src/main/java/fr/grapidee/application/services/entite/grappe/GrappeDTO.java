@@ -1,5 +1,6 @@
 package fr.grapidee.application.services.entite.grappe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.grapidee.application.services.commun.dto.CommunDTO;
@@ -7,10 +8,13 @@ import fr.grapidee.application.services.entite.idee.IdeeDTO;
 
 public class GrappeDTO extends CommunDTO {
 	
-	private List<IdeeDTO> Idees;
+	private List<IdeeDTO> Idees =null;
 	
-	private GrappeDTO grappeParent;
+	private GrappeDTO grappeParent= null;
 
+	private List<GrappeDTO> grappeEnfants= null;
+
+	
 	private String type;
 	
 	public List<IdeeDTO> getIdees() {
@@ -35,6 +39,14 @@ public class GrappeDTO extends CommunDTO {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public List<GrappeDTO> getGrappeEnfants() {
+		return grappeEnfants;
+	}
+
+	public void setGrappeEnfants(List<GrappeDTO> grappeEnfants) {
+		this.grappeEnfants = grappeEnfants;
 	}
 	
 	
