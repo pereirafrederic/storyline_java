@@ -1,6 +1,5 @@
----
 server: 
-  port: 9000
+  port: 9001
 #spring: 
 #  datasource: 
 #    ddl-auto: create-drop
@@ -10,7 +9,7 @@ server:
 #    platform: postgresql
 #    url: "jdbc:postgresql://localhost:5432/"
 #    username: postgres
-#  profile: dev
+#    profile: prod
 spring:
     jpa:
         database: MYSQL
@@ -18,7 +17,7 @@ spring:
             ddl-auto: validate
 
     datasource:
-        url: jdbc:mysql://192.168.0.18:3306/grapidee_v2
+        url: jdbc:mysql://192.168.0.18:3306/storyline
         username: app 
         password: sarahfred
         driver-class-name: com.mysql.jdbc.Driver  
