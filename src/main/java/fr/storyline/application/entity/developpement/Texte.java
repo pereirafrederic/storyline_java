@@ -35,6 +35,9 @@ public class Texte extends AbstractVersionning {
 	private String essai6;
 	@Column(length = 10000,name="essai_7")
 	private String essai7;
+	
+	
+	
 	public Version getVersion() {
 		return version;
 	}

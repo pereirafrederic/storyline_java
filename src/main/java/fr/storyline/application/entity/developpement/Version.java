@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "Version")
 @Table(name = "version", schema = "storyline")
@@ -20,6 +21,7 @@ public class Version extends AbstractVersionning {
 
 	@ManyToOne
 	@JoinColumn(name = "dev_id")
+	@NotNull
 	private Developpement developpement;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "version", targetEntity = Texte.class)

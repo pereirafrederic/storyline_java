@@ -9,26 +9,24 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import fr.pereirafrederic.v2.storyline.exception.IValidPassword;
+import fr.storyline.application.entity.acces.AccesEvenement;
+import fr.storyline.application.entity.acces.AccesLivre;
+import fr.storyline.application.entity.commun.AbstractId;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import fr.storyline.application.entity.acces.AccesEvenement;
-import fr.storyline.application.entity.acces.AccesLivre;
-import fr.storyline.application.entity.commun.AbstractId;
-
-@Entity(name = "utilisateur")
+@Entity(name = "nom")
 @Table(name = "utilisateur", schema = "storyline")
-@Getter
-@FieldDefaults(level=AccessLevel.PRIVATE)
-@NoArgsConstructor
-@AllArgsConstructor
 public class Utilisateur extends AbstractId {
 
 	/**
@@ -39,16 +37,30 @@ public class Utilisateur extends AbstractId {
 	@NotBlank
 	@NotNull
 	@NotEmpty
-	private String nom;
+	@Size(min=3,max=50, message 
+		      = "le pseudo doit contenir entre 3 et 80 charactères ")
+	private String pseudo;
+	
 	@NotBlank
 	@NotNull
 	@NotEmpty
+	@Size(min=3,max=100, message 
+		      = "l'email doit contenir entre 3 et 100 charactères")
+	@Email(message = "l'email doit être valide")
 	private String email;
+	
 	@NotBlank
 	@NotNull
 	@NotEmpty
 	@Column(name="mot_passe")
+	@fr.storyline.application.validator.IValidPassword
 	private String motDePasse;
+	
+	@NotBlank
+	@NotNull
+	@NotEmpty
+	private String salt;
+	
 	@NotBlank
 	@NotNull
 	@NotEmpty
@@ -61,13 +73,6 @@ public class Utilisateur extends AbstractId {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "utilisateur", targetEntity = AccesEvenement.class)
 	private List<AccesEvenement> accesEvenements ;
 
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
 
 	public String getEmail() {
 		return email;
@@ -107,6 +112,22 @@ public class Utilisateur extends AbstractId {
 
 	public void setAccesEvenements(List<AccesEvenement> accesEvenements) {
 		this.accesEvenements = accesEvenements;
+	}
+
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	
 

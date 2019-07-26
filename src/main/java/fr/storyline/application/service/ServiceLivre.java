@@ -29,7 +29,7 @@ public class ServiceLivre {
 		
 		Boolean droitOk = utilisateur.getAccesLivres().stream().anyMatch( acces -> acces.getLivre().getId() == id);
 		if(droitOk){
-		return repoLivre.findOne(id);
+		return repoLivre.findById(id).get();
 		}
 		
 		return null;

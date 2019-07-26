@@ -29,7 +29,7 @@ public class ServiceEvenement {
 		
 		Boolean droitOK = utilisateur.getAccesEvenements().stream().anyMatch( acces -> acces.getEvenement().getId() == id);
 		if(droitOK){
-			return repoEvenement.findOne(id);
+			return repoEvenement.findById(id).get();
 		}
 		
 		return null;

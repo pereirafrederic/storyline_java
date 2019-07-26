@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import fr.storyline.application.entity.commun.AbstractId;
 import fr.storyline.application.entity.contenu.Evenement;
@@ -25,9 +26,12 @@ public class Condition extends AbstractId {
 	
 	@ManyToOne
 	@JoinColumn(name = "ev_id")
+	@NotNull
 	private Evenement evenementADebloquer;
+	
 	@ManyToOne
 	@JoinColumn(name = "book_id")
+	@NotNull
 	private Livre Livre;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "condition", targetEntity = ConditionDetail.class)

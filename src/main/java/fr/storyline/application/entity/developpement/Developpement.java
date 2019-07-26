@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import fr.storyline.application.entity.commun.AbstractId;
 
@@ -22,6 +23,7 @@ public class Developpement extends AbstractId {
 	
 	@ManyToOne
 	@JoinColumn(name = "version_id")
+	@NotNull
 	private Version version;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "developpement", targetEntity = Version.class)

@@ -4,6 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import fr.storyline.application.entity.commun.AbstractId;
 import fr.storyline.application.entity.developpement.Developpement;
@@ -25,14 +30,19 @@ public class Evenement extends AbstractId {
 	
 	@ManyToOne
 	@JoinColumn(name = "space_id")
+	
+
+	@NotNull
 	private Espace espace;
 	
 	@ManyToOne
 	@JoinColumn(name = "time_id")
+	@NotNull
 	private Temps temps;
 	
 	@ManyToOne
 	@JoinColumn(name = "book_id")
+	@NotNull
 	private Livre livre;
 	
 	@ManyToOne

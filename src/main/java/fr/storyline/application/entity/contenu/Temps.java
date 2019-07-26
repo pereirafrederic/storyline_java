@@ -8,6 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
+import org.checkerframework.checker.index.qual.Positive;
 
 import fr.storyline.application.entity.commun.AbstractId;
 
@@ -20,7 +24,14 @@ public class Temps extends AbstractId {
 	 */
 	private static final long serialVersionUID = 7651345125628872606L;
 	
+	@Positive
+	@NotNull
+	@Max(value=100)
 	private Long annee;
+	
+	@Positive
+	@NotNull
+	@Max(value=100)
 	private Long jour;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "temps", targetEntity = Evenement.class)
@@ -28,6 +39,7 @@ public class Temps extends AbstractId {
 	
 	@ManyToOne
 	@JoinColumn(name = "book_id")
+	@NotNull
 	private Livre livre;
 
 	public Long getAnnee() {

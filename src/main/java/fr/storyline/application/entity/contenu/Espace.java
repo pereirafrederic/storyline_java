@@ -8,6 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import fr.storyline.application.entity.commun.AbstractId;
 
@@ -21,6 +26,11 @@ public class Espace extends AbstractId {
 	 */
 	private static final long serialVersionUID = -6422730408713046220L;
 	
+	
+	@NotBlank
+	@NotNull
+	@NotEmpty
+	@Length(min=3, max=50)
 	private String nom;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "espace", targetEntity = Evenement.class)
@@ -28,6 +38,7 @@ public class Espace extends AbstractId {
 	
 	@ManyToOne
 	@JoinColumn(name = "book_id")
+	@NotNull
 	private Livre livre;
 
 	public String getNom() {
