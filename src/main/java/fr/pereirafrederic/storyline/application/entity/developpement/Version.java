@@ -1,5 +1,8 @@
 package fr.pereirafrederic.storyline.application.entity.developpement;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,6 +14,10 @@ import javax.persistence.Table;
 
 @Entity(name = "Version")
 @Table(name = "version", schema = "storyline")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Getter
+@Setter
 public class Version extends AbstractVersionning {
 
 	/**
@@ -20,25 +27,9 @@ public class Version extends AbstractVersionning {
 
 	@ManyToOne
 	@JoinColumn(name = "dev_id")
-	private Developpement developpement;
+	Developpement developpement;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "version", targetEntity = Texte.class)
-	private List<Texte> textes;
-
-	public Developpement getDeveloppement() {
-		return developpement;
-	}
-
-	public void setDeveloppement(Developpement developpement) {
-		this.developpement = developpement;
-	}
-
-	public List<Texte> getTextes() {
-		return textes;
-	}
-
-	public void setTextes(List<Texte> textes) {
-		this.textes = textes;
-	}
+	List<Texte> textes;
 
 }

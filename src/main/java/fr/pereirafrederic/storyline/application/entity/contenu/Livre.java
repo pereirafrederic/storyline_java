@@ -10,72 +10,35 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import fr.pereirafrederic.storyline.application.entity.commun.AbstractId;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Entity(name = "Livre")
 @Table(name = "livre", schema = "storyline")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Getter
+@Setter
 public class Livre extends AbstractId {
+
+	static final long serialVersionUID = -8457467724925851367L;
 	
-	
-	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8457467724925851367L;
-	
-	private String nom;
+	String nom;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "livre", targetEntity = Evenement.class)
-	private List<Evenement> evenements;
+	List<Evenement> evenements;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "livre", targetEntity = Espace.class)
-	private List<Espace> espace;
+	List<Espace> espace;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "livre", targetEntity = Temps.class)
-	private List<Temps> temps;
+	List<Temps> temps;
 	
 	@ManyToOne
 	@JoinColumn(name = "collect_id")
-	private CollectionLivre collectionLivre;
-
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public List<Evenement> getEvenements() {
-		return evenements;
-	}
-
-	public void setEvenements(List<Evenement> evenements) {
-		this.evenements = evenements;
-	}
-
-	public List<Espace> getEspace() {
-		return espace;
-	}
-
-	public void setEspace(List<Espace> espace) {
-		this.espace = espace;
-	}
-
-	public List<Temps> getTemps() {
-		return temps;
-	}
-
-	public void setTemps(List<Temps> temps) {
-		this.temps = temps;
-	}
-
-	public CollectionLivre getCollectionLivre() {
-		return collectionLivre;
-	}
-
-	public void setCollectionLivre(CollectionLivre collectionLivre) {
-		this.collectionLivre = collectionLivre;
-	}
+	CollectionLivre collectionLivre;
 	
 }

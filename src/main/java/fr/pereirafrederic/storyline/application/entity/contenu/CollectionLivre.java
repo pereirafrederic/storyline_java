@@ -8,37 +8,24 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import fr.pereirafrederic.storyline.application.entity.commun.AbstractId;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Entity(name = "CollectionLivre")
 @Table(name = "collection_livre", schema = "storyline")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Getter
+@Setter
 public class CollectionLivre extends AbstractId {
+
+	static final long serialVersionUID = -8457467724925851367L;
 	
-	
-	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8457467724925851367L;
-	
-	private String nom;
+	String nom;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "collectionLivre", targetEntity = Livre.class)
-	private List<Livre> livres;
-
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public List<Livre> getLivres() {
-		return livres;
-	}
-
-	public void setLivres(List<Livre> livres) {
-		this.livres = livres;
-	}
+	List<Livre> livres;
 	}

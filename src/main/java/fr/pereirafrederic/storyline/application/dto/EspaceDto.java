@@ -1,15 +1,17 @@
 package fr.pereirafrederic.storyline.application.dto;
 
-public class EspaceDto extends CommunDTO{
-	
-	private String nom;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
-	public String getNom() {
-		return nom;
-	}
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Getter
+@Setter
+public class EspaceDto extends CommunDTO {
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    String nom;
 
 }

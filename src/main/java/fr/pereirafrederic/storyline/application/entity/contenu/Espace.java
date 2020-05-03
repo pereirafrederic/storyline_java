@@ -10,51 +10,34 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import fr.pereirafrederic.storyline.application.entity.commun.AbstractId;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Entity(name = "Espace")
 @Table(name = "espace", schema = "storyline")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Getter
+@Setter
 public class Espace extends AbstractId {
 
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6422730408713046220L;
+	static final long serialVersionUID = -6422730408713046220L;
 	
-	private String nom;
+	String nom;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "espace", targetEntity = Evenement.class)
-	private List<Evenement> evenements;
+	List<Evenement> evenements;
 	
 	@ManyToOne
 	@JoinColumn(name = "book_id")
-	private Livre livre;
-
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public List<Evenement> getEvenements() {
-		return evenements;
-	}
-
-	public void setEvenements(List<Evenement> evenements) {
-		this.evenements = evenements;
-	}
-
-	public Livre getLivre() {
-		return livre;
-	}
-
-	public void setLivre(Livre livre) {
-		this.livre = livre;
-	}
-	
-	
+	Livre livre;
 
 
 }

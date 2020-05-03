@@ -8,50 +8,34 @@ import javax.persistence.Table;
 import fr.pereirafrederic.storyline.application.entity.commun.AbstractId;
 import fr.pereirafrederic.storyline.application.entity.contenu.Livre;
 import fr.pereirafrederic.storyline.application.entity.user.Utilisateur;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Entity(name = "AccesLivre")
 @Table(name = "acces_livre", schema = "storyline")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Getter
+@Setter
 public class AccesLivre extends AbstractId {
 
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6422730408713046220L;
+	static final long serialVersionUID = -6422730408713046220L;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private Utilisateur utilisateur;
+	Utilisateur utilisateur;
 	
 	@ManyToOne
 	@JoinColumn(name = "book_id")
-	private Livre livre;
+	Livre livre;
 	
-	private EnumEtatLecture etat;
-
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
-
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
-
-	public Livre getLivre() {
-		return livre;
-	}
-
-	public void setLivre(Livre livre) {
-		this.livre = livre;
-	}
-
-	public EnumEtatLecture getEtat() {
-		return etat;
-	}
-
-	public void setEtat(EnumEtatLecture etat) {
-		this.etat = etat;
-	}
-
+	EnumEtatLecture etat;
 
 }

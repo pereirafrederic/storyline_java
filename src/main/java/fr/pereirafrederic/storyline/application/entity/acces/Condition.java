@@ -12,50 +12,33 @@ import javax.persistence.Table;
 import fr.pereirafrederic.storyline.application.entity.commun.AbstractId;
 import fr.pereirafrederic.storyline.application.entity.contenu.Evenement;
 import fr.pereirafrederic.storyline.application.entity.contenu.Livre;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Entity(name = "Condition")
 @Table(name = "condition_deblocage", schema = "storyline")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Getter
+@Setter
 public class Condition extends AbstractId {
 
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6422730408713046220L;
+	static final long serialVersionUID = -6422730408713046220L;
 	
 	@ManyToOne
 	@JoinColumn(name = "ev_id")
-	private Evenement evenementADebloquer;
+	Evenement evenementADebloquer;
 	@ManyToOne
 	@JoinColumn(name = "book_id")
-	private Livre Livre;
+	Livre Livre;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "condition", targetEntity = ConditionDetail.class)
-	private List<ConditionDetail> details;
-
-	public Evenement getEvenementADebloquer() {
-		return evenementADebloquer;
-	}
-
-	public void setEvenementADebloquer(Evenement evenementADebloquer) {
-		this.evenementADebloquer = evenementADebloquer;
-	}
-
-	public Livre getLivre() {
-		return Livre;
-	}
-
-	public void setLivre(Livre livre) {
-		Livre = livre;
-	}
-
-	public List<ConditionDetail> getDetails() {
-		return details;
-	}
-
-	public void setDetails(List<ConditionDetail> details) {
-		this.details = details;
-	}
-
-
+	List<ConditionDetail> details;
 }

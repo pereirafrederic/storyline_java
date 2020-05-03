@@ -1,18 +1,20 @@
 package fr.pereirafrederic.storyline.application.dto;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
 import java.util.List;
 
-public class VersionDto extends VersionningDto{
-	
-	
-	private List<TexteDto> textes;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Getter
+@Setter
+public class VersionDto extends VersionningDto {
 
-	public List<TexteDto> getTextes() {
-		return textes;
-	}
 
-	public void setTextes(List<TexteDto> textes) {
-		this.textes = textes;
-	}
+    List<TexteDto> textes;
 
 }
